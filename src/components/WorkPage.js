@@ -8,13 +8,15 @@ import PowerButton from "../subComponents/PowerButton";
 import { Work } from "../data/WorkData";
 import Card from "../subComponents/Card";
 import { YinYang } from "./AllSvgs";
+import BigTitle from "../subComponents/BigTitle";
 
 const Box = styled.div`
   background-color: ${(props) => props.theme.body};
 
   height: 400vh;
   position: relative;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
 `;
 
 const Main = styled.div`
@@ -39,19 +41,22 @@ const Rotate = styled.span`
 
 const WorkPage = () => {
   const ref = useRef(null);
-  const yinYang = useRef(null);
+  const yinyang = useRef(null);
 
   useEffect(() => {
     let element = ref.current;
 
     const rotate = () => {
       element.style.transform = `translateX(${-window.pageYOffset}px)`;
-      yinYang.current.style.transform = `rotate(` + window.pageYOffset + "deg)";
+
+      return (yinyang.current.style.transform =
+        "rotate(" + -window.pageYOffset + "deg)");
     };
 
     window.addEventListener("scroll", rotate);
-
-    return () => window.removeEventListener("scroll", rotate);
+    return () => {
+      window.removeEventListener("scroll", rotate);
+    };
   }, []);
 
   return (
@@ -65,9 +70,10 @@ const WorkPage = () => {
             <Card key={d.id} data={d} />
           ))}
         </Main>
-        <Rotate ref={yinYang}>
+        <Rotate ref={yinyang}>
           <YinYang width={80} height={80} fill={darkTheme.text} />
         </Rotate>
+        <BigTitle text="WORK" top="10%" right="20%" />
       </Box>
     </ThemeProvider>
   );
